@@ -23,15 +23,7 @@ int main(int argc, const char **argv)
 		err_log("Couldn't init GLFW");
 		return 1;
 	}
-
-	window = glfwCreateWindow(1280, 720, "QUIC streamer", NULL, NULL);
-	if (window == NULL)
-	{
-		err_log("Window: Couldn't open window");
-		glfwTerminate();
-		return 1;
-	}
-
+	
 	decoder_t dec;
 	if (!quicsy_decoder_open(&dec, argv[1]))
 	{
@@ -39,6 +31,14 @@ int main(int argc, const char **argv)
 		return 1;
 	}
 	log("opening the input file (%s) and loading format (container) header", argv[1]);
+
+	window = glfwCreateWindow(dec.width, dec.height, "QUIC streamer", NULL, NULL);
+	if (window == NULL)
+	{
+		err_log("Window: Couldn't open window");
+		glfwTerminate();
+		return 1;
+	}
 
 	glfwMakeContextCurrent(window);
 
@@ -101,16 +101,16 @@ int main(int argc, const char **argv)
 		glBindTexture(GL_TEXTURE_2D, tex_handle);
 		glBegin(GL_QUADS);
 		glTexCoord2d(0, 0);
-		glVertex2i(200, 200);
+		glVertex2i(0,0);
 		glTexCoord2d(1, 0);
-		glVertex2i(200 + frame_width, 200);
+		glVertex2i(window_width, 0);
 		glTexCoord2d(1, 1);
-		glVertex2i(200 + frame_width, 200 + frame_height);
+		glVertex2i(window_width, window_height);
 		glTexCoord2d(0, 1);
-		glVertex2i(200, 200 + frame_height);
+		glVertex2i(0, window_height);
 		glEnd();
 		glDisable(GL_TEXTURE_2D);
-
+		
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
