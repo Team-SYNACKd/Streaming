@@ -10,7 +10,7 @@ ACLOCAL_AMFLAGS = -I m4 ${ACLOCAL_FLAGS}
 streamer:
 	cc main_window.cpp decoder.cpp -lstdc++ -lavcodec -lavformat -lavutil -lswresample -lswscale -lglfw -lGL -o bin/player
 tcp_streaming:
-	cc main_window.cpp decoder.cpp tcp_client.c -lstdc++ -lavcodec -lavformat -lavutil -lswresample -lswscale -lglfw -lGL -o bin/tcp_player && cc tcp_server.c -o bin/tcp_server
+	cc tcp_main_window.cpp decoder.cpp tcp_client.c -lstdc++ -lavcodec -lavformat -lavutil -lswresample -lswscale -lglfw -lGL -o bin/tcp_player && cc tcp_server.c -o bin/tcp_server
 transcoder:
 	cc transcoder.c debug.c -lstdc++ -lavcodec -lavformat -lavutil -lswresample -lswscale -lglfw -lGL -o bin/transcoder
 
