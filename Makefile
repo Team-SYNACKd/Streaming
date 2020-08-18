@@ -31,3 +31,5 @@ tcp_player: dir
 
 transcoder: dir
 	$(CC) $(SRC_TRANSCODER) $(LIBS) $(ALL_CFLAGS) $(TARGET_DIR)$@
+
+print-%  : ; @echo $* = $($*)
