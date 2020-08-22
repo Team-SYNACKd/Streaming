@@ -29,4 +29,7 @@ tcp_player:
 transcoder:
 	$(CC) $(SRC_TRANSCODER) $(LIBS) $(ALL_CFLAGS) $(TARGET_DIR)$@
 
+clean:
+	@rm -rf $(TARGET_DIR)
+
 print-%  : ; @echo $* = $($*)
