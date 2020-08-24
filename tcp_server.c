@@ -35,27 +35,31 @@ void sentFile(int sockfd)
 		return;
 	}
 
-	send_fd = open(file_name, O_RDONLY); // open file uses both stdio and stdin header files
+	FILE* fp;
+	fp = fopen(file_name,"rb");
+	fseek(fp, 0, SEEK_END);
+	long long int fsize = ftell(fp);
+	fseek(fp, 0, SEEK_SET);
 
-	// file should be present at the program directory
-	if (!send_fd)
-	{
-		printf("Error in opening File\n");
+	char* fbuff = (char*)malloc(fsize);
+
+	if (fbuff==NULL){
+		printf("Memory not allocated for the file buffer");
 		return;
 	}
 
-	while (1)
-	{
-		memset(buff, 0x00, MAX);
-		read_len = read(send_fd, buff, MAX);
-		ret = send(sockfd, buff, read_len, 0);
-		if (ret < 0)
+	for(;;){
+		size_t bytesread = fread(fbuff, 1, fsize, fp);
+		ret = send(sockfd, fbuff, bytesread, 0);
+
+		if (ret<0)
 		{
-			printf("Failed to send data\n");
+			printf("Failed to send the file buffer");
 		}
-		if (read_len == 0)
-		{
-			printf("File Sent successfully !!! \n");
+		
+		if (bytesread==0){
+			printf("File copied to the buffer and sent to the client");
+			realloc(fbuff, 0);
 			break;
 		}
 	}
